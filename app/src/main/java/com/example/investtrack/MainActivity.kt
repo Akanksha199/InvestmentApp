@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             InvestTrackTheme {
                 Text("InvestTrack App Started 🚀")
+                Text("InvestTrack App Started 🚀")
             }
         }
     }
