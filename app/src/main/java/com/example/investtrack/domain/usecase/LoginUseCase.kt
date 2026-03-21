@@ -2,21 +2,16 @@ package com.example.investtrack.domain.usecase
 
 
 import com.example.investtrack.domain.model.Resource
+import com.example.investtrack.domain.repository.AuthRepository
 import kotlinx.coroutines.delay
-
-class LoginUseCase {
+class LoginUseCase(
+    private val repository: AuthRepository
+) {
 
     suspend operator fun invoke(
         email: String,
         password: String
-    ): Resource<Boolean> {
-
-        delay(1500) // simulate API
-
-        return if (email == "test@test.com" && password == "1234") {
-            Resource.Success(true)
-        } else {
-            Resource.Error("Invalid credentials")
-        }
+    ): Resource<String> {
+        return repository.login(email, password)
     }
 }
