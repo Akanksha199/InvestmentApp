@@ -1,13 +1,14 @@
 package com.example.investtrack.presentation.navigation
 
-import android.window.SplashScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.investtrack.presentation.ui.DashboardScreen
 import com.example.investtrack.presentation.ui.InvestSplashScreen
-import com.example.investtrack.presentation.ui.LoginScreen
+import com.example.investtrack.presentation.ui.auth.LoginScreenUI
+import com.example.investtrack.presentation.ui.auth.SignupScreenUI
+import com.example.investtrack.presentation.ui.auth.SplashScreenUI
 
 @Composable
 fun AppNavGraph() {
@@ -20,15 +21,19 @@ fun AppNavGraph() {
     ) {
 
         composable(Routes.Splash.route) {
-            InvestSplashScreen(navController)
+            SplashScreenUI(navController)
         }
 
         composable(Routes.Login.route) {
-            LoginScreen(navController)
+            LoginScreenUI(navController)
         }
 
         composable(Routes.Dashboard.route) {
             DashboardScreen()
+        }
+
+        composable(Routes.Signup.route) {
+            SignupScreenUI(navController)
         }
     }
 }
