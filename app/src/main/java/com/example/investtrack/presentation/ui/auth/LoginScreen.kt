@@ -18,6 +18,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -28,17 +29,23 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.investtrack.presentation.navigation.Routes
+import com.example.investtrack.presentation.ui.components.ErrorText
+import com.example.investtrack.presentation.ui.components.LoadingIndicator
 import com.example.investtrack.presentation.ui.components.PasswordTextField
 import com.example.investtrack.presentation.ui.components.PrimaryButton
 import com.example.investtrack.presentation.ui.components.PrimaryTextField
+import com.example.investtrack.presentation.viewmodel.AuthViewModel
 
 @Composable
 fun LoginScreenUI(navController: NavController) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val viewModel: AuthViewModel = viewModel()
+    val state by viewModel.state.collectAsState()
 
     Box(
         modifier = Modifier
@@ -106,11 +113,23 @@ fun LoginScreenUI(navController: NavController) {
                     PrimaryButton(
                         text = "Login",
                         onClick = {
-                            navController.navigate(Routes.Dashboard.route)
+                            viewModel.login(email, password)
                         }
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
+
+                    if (state.isLoading) {
+                        LoadingIndicator()
+                    }
+
+                    state.error?.let {
+                        ErrorText(it)
+                    }
+
+                    if (state.isSuccess) {
+                        navController.navigate(Routes.Dashboard.route)
+                    }
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
