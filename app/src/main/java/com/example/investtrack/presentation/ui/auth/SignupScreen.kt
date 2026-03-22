@@ -15,6 +15,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,10 +25,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.investtrack.presentation.ui.components.PasswordTextField
 import com.example.investtrack.presentation.ui.components.PrimaryButton
 import com.example.investtrack.presentation.ui.components.PrimaryTextField
+import com.example.investtrack.presentation.viewmodel.AuthViewModel
 
 @Composable
 fun SignupScreenUI(navController: NavController) {
@@ -36,6 +39,8 @@ fun SignupScreenUI(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    val viewModel: AuthViewModel = viewModel()
+    val state by viewModel.state.collectAsState()
 
     Box(
         modifier = Modifier
@@ -119,7 +124,7 @@ fun SignupScreenUI(navController: NavController) {
                     PrimaryButton(
                         text = "Sign Up",
                         onClick = {
-                            navController.popBackStack()
+                            viewModel.signup(name, email, password, confirmPassword)
                         }
                     )
                 }
